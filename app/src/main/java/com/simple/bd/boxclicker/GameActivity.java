@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.simple.bd.boxclicker.ScoreDatabase.Score;
+import com.simple.bd.boxclicker.ScoreDatabase.ScoreDao;
+import com.simple.bd.boxclicker.ScoreDatabase.ScoreRepository;
+
 public class GameActivity extends AppCompatActivity {
 
     private String VALUE_STATE_KEY;
@@ -15,10 +19,17 @@ public class GameActivity extends AppCompatActivity {
     private String mValueString;
     private Button buttons[] = new Button[9];
     int mCurrentScore = 0;
+    private Score mScore;
+    private ScoreRepository mScoreRepository;
+    private int scoreId = 0;
 
+
+    //TODO Be LESS ~DRY~!!!!
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mScore = new Score();
+        mScoreRepository = new ScoreRepository(getBaseContext());
         setContentView(R.layout.activity_game);
         buttons[0] = findViewById(R.id.blackButton1);
         buttons[1] = findViewById(R.id.blackButton2);
@@ -32,7 +43,7 @@ public class GameActivity extends AppCompatActivity {
         for(int i = 1; i<9;i++){
             buttons[i].setVisibility(View.GONE);
         }
-
+        //TODO Update database to correctly remember which entry it is on.
         mScoreTextView = findViewById(R.id.scoreString);
         mValueTextView = findViewById(R.id.valueString);
         if (savedInstanceState != null) {
@@ -41,15 +52,24 @@ public class GameActivity extends AppCompatActivity {
         }else{
             mValueTextView.setText(Integer.toString(mCurrentScore));
         }
-
-
-
+        if(mScoreRepository.getAmount()>0){
+            mValueTextView.setText(Integer.toString(mScoreRepository.getAmount()));
+            mCurrentScore = mScoreRepository.getAmount();
+        }
+        mScore.setScoreId(scoreId);
+        mScore.setScoreTotal(mCurrentScore);
+        mScore.setTimeStamp("testTime");
+        mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCurrentScore++;
+                scoreId++;
+                mScore.setScoreId(scoreId);
+                mScore.setScoreTotal(mCurrentScore);
+                mScore.setTimeStamp("testTime");
                 mValueTextView.setText(Integer.toString(mCurrentScore));
-
+                mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
                 int buttonNum = randomNum();
                 decideBox(buttonNum,buttons[0],buttons);
             }
@@ -59,7 +79,12 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentScore++;
+                scoreId++;
+                mScore.setScoreId(scoreId);
+                mScore.setScoreTotal(mCurrentScore);
+                mScore.setTimeStamp("testTime");
                 mValueTextView.setText(Integer.toString(mCurrentScore));
+                mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
                 int buttonNum = randomNum();
                 decideBox(buttonNum,buttons[1],buttons);
             }
@@ -69,7 +94,12 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentScore++;
+                scoreId++;
+                mScore.setScoreId(scoreId);
+                mScore.setScoreTotal(mCurrentScore);
+                mScore.setTimeStamp("testTime");
                 mValueTextView.setText(Integer.toString(mCurrentScore));
+                mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
                 int buttonNum = randomNum();
                 decideBox(buttonNum,buttons[2],buttons);
             }
@@ -79,7 +109,13 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentScore++;
+                scoreId++;
+                mScore.setScoreId(scoreId);
+                mScore.setScoreTotal(mCurrentScore);
+                mScore.setTimeStamp("testTime");
                 mValueTextView.setText(Integer.toString(mCurrentScore));
+                mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
+                mScoreRepository.getAmount();
                 int buttonNum = randomNum();
                 decideBox(buttonNum,buttons[3],buttons);
             }
@@ -89,7 +125,12 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentScore++;
+                scoreId++;
+                mScore.setScoreId(scoreId);
+                mScore.setScoreTotal(mCurrentScore);
+                mScore.setTimeStamp("testTime");
                 mValueTextView.setText(Integer.toString(mCurrentScore));
+                mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
                 int buttonNum = randomNum();
                 decideBox(buttonNum,buttons[4],buttons);
             }
@@ -99,7 +140,12 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentScore++;
+                scoreId++;
+                mScore.setScoreId(scoreId);
+                mScore.setScoreTotal(mCurrentScore);
+                mScore.setTimeStamp("testTime");
                 mValueTextView.setText(Integer.toString(mCurrentScore));
+                mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
                 int buttonNum = randomNum();
                 decideBox(buttonNum,buttons[5],buttons);
             }
@@ -109,7 +155,12 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentScore++;
+                scoreId++;
+                mScore.setScoreId(scoreId);
+                mScore.setScoreTotal(mCurrentScore);
+                mScore.setTimeStamp("testTime");
                 mValueTextView.setText(Integer.toString(mCurrentScore));
+                mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
                 int buttonNum = randomNum();
                 decideBox(buttonNum,buttons[6],buttons);
             }
@@ -119,7 +170,13 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentScore++;
+                scoreId++;
+                mScore.setScoreId(scoreId);
+                mScore.setScoreTotal(mCurrentScore);
+                mScore.setTimeStamp("testTime");
                 mValueTextView.setText(Integer.toString(mCurrentScore));
+                mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
+
                 int buttonNum = randomNum();
                 decideBox(buttonNum,buttons[7],buttons);
             }
@@ -129,7 +186,12 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentScore++;
+                scoreId++;
+                mScore.setScoreId(scoreId);
+                mScore.setScoreTotal(mCurrentScore);
+                mScore.setTimeStamp("testTime");
                 mValueTextView.setText(Integer.toString(mCurrentScore));
+                mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
                 int buttonNum = randomNum();
                 decideBox(buttonNum,buttons[8],buttons);
             }
