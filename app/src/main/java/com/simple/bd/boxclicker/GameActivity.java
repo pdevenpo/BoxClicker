@@ -1,6 +1,7 @@
 package com.simple.bd.boxclicker;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,11 +12,15 @@ import com.simple.bd.boxclicker.ScoreDatabase.Score;
 import com.simple.bd.boxclicker.ScoreDatabase.ScoreDao;
 import com.simple.bd.boxclicker.ScoreDatabase.ScoreRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameActivity extends AppCompatActivity {
 
     private String VALUE_STATE_KEY;
     private static TextView mValueTextView;
-    private String mValueString;
+    private static TextView mTimeTextView;
+
     private Button buttons[] = new Button[9];
     private static int mCurrentScore = 0;
     private static Score mScore;
@@ -32,6 +37,12 @@ public class GameActivity extends AppCompatActivity {
             R.id.blackButton8,
             R.id.blackButton9,
     };
+    private long lastClickTime = 0;
+    private static List<Double>mTimeAverageArray = new ArrayList<Double>();
+    private double castTime;
+    private double avgTime;
+    private int arrayListSize = 1;
+    private double timeSum =0.0;
 
 
 
@@ -42,8 +53,10 @@ public class GameActivity extends AppCompatActivity {
         mScore = new Score();
         mScoreRepository = new ScoreRepository(getBaseContext());
         //grab text view
-        mValueTextView = findViewById(R.id.valueString);
+        mTimeAverageArray.add(0.0);
         setContentView(R.layout.activity_game);
+        mValueTextView = findViewById(R.id.valueString);
+        mTimeTextView = findViewById(R.id.timeString);
         //create button array
         for(int i = 0;i <9;i++){
             String buttonNum = "blackButton" + i;
@@ -55,10 +68,10 @@ public class GameActivity extends AppCompatActivity {
         }
 
         //handle rotations
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && mValueTextView != null) {
             mCurrentScore = savedInstanceState.getInt(VALUE_STATE_KEY);
             mValueTextView.setText(Integer.toString(mCurrentScore));
-        }else{
+        }else if(mValueTextView != null){
             mValueTextView.setText(Integer.toString(mCurrentScore));
         }
 
@@ -77,7 +90,11 @@ public class GameActivity extends AppCompatActivity {
             mScore.setTimeStamp("0");
             mScoreRepository.insertScore(mScore.getScoreTotal(),mScore.getScoreId(),mScore.getTimeStamp());
         }
+        final long bootTime = SystemClock.elapsedRealtime();
+        lastClickTime = bootTime;
 
+        //TODO Fix time avg math, divide by 1000, fix styling
+        //TODO save time avg to sql database on activity destroy to save total all time
         //click listeners for buttons
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +102,16 @@ public class GameActivity extends AppCompatActivity {
                 valueUpdateHelper(mCurrentScore,scoreId);
                 mValueTextView.setText(Integer.toString(mCurrentScore));
                 int buttonNum = randomNum();
+                Long timeNow = SystemClock.elapsedRealtime();
+                Long timeElapsed = SystemClock.elapsedRealtime() - lastClickTime;
+                lastClickTime = timeNow;
+                castTime = (double) timeElapsed;
+                mTimeAverageArray.add(castTime);
+                for (int i = 0; i < mTimeAverageArray.size();i++){
+                    timeSum = timeSum + mTimeAverageArray.get(i);
+                }
+                avgTime = (timeSum/mTimeAverageArray.size());
+                mTimeTextView.setText(String.valueOf(avgTime));
                 decideBox(buttonNum,buttons[0],buttons);
             }
         });
@@ -95,6 +122,16 @@ public class GameActivity extends AppCompatActivity {
                 valueUpdateHelper(mCurrentScore,scoreId);
                 mValueTextView.setText(Integer.toString(mCurrentScore));
                 int buttonNum = randomNum();
+                Long timeNow = SystemClock.elapsedRealtime();
+                Long timeElapsed = SystemClock.elapsedRealtime() - lastClickTime;
+                lastClickTime = timeNow;
+                castTime = (double) timeElapsed;
+                mTimeAverageArray.add(castTime);
+                for (int i = 0; i < mTimeAverageArray.size();i++){
+                    timeSum = timeSum + mTimeAverageArray.get(i);
+                }
+                avgTime = (timeSum/mTimeAverageArray.size());
+                mTimeTextView.setText(String.valueOf(avgTime));
                 decideBox(buttonNum,buttons[1],buttons);
             }
         });
@@ -105,6 +142,16 @@ public class GameActivity extends AppCompatActivity {
                 valueUpdateHelper(mCurrentScore,scoreId);
                 mValueTextView.setText(Integer.toString(mCurrentScore));
                 int buttonNum = randomNum();
+                Long timeNow = SystemClock.elapsedRealtime();
+                Long timeElapsed = SystemClock.elapsedRealtime() - lastClickTime;
+                lastClickTime = timeNow;
+                castTime = (double) timeElapsed;
+                mTimeAverageArray.add(castTime);
+                for (int i = 0; i < mTimeAverageArray.size();i++){
+                    timeSum = timeSum + mTimeAverageArray.get(i);
+                }
+                avgTime = (timeSum/mTimeAverageArray.size());
+                mTimeTextView.setText(String.valueOf(avgTime));
                 decideBox(buttonNum,buttons[2],buttons);
             }
         });
@@ -116,6 +163,16 @@ public class GameActivity extends AppCompatActivity {
                 mValueTextView.setText(Integer.toString(mCurrentScore));
                 mScoreRepository.getAmount();
                 int buttonNum = randomNum();
+                Long timeNow = SystemClock.elapsedRealtime();
+                Long timeElapsed = SystemClock.elapsedRealtime() - lastClickTime;
+                lastClickTime = timeNow;
+                castTime = (double) timeElapsed;
+                mTimeAverageArray.add(castTime);
+                for (int i = 0; i < mTimeAverageArray.size();i++){
+                    timeSum = timeSum + mTimeAverageArray.get(i);
+                }
+                avgTime = (timeSum/mTimeAverageArray.size());
+                mTimeTextView.setText(String.valueOf(avgTime));
                 decideBox(buttonNum,buttons[3],buttons);
             }
         });
@@ -126,6 +183,16 @@ public class GameActivity extends AppCompatActivity {
                 valueUpdateHelper(mCurrentScore,scoreId);
                 mValueTextView.setText(Integer.toString(mCurrentScore));
                 int buttonNum = randomNum();
+                Long timeNow = SystemClock.elapsedRealtime();
+                Long timeElapsed = SystemClock.elapsedRealtime() - lastClickTime;
+                lastClickTime = timeNow;
+                castTime = (double) timeElapsed;
+                mTimeAverageArray.add(castTime);
+                for (int i = 0; i < mTimeAverageArray.size();i++){
+                    timeSum = timeSum + mTimeAverageArray.get(i);
+                }
+                avgTime = (timeSum/mTimeAverageArray.size());
+                mTimeTextView.setText(String.valueOf(avgTime));
                 decideBox(buttonNum,buttons[4],buttons);
             }
         });
@@ -136,6 +203,16 @@ public class GameActivity extends AppCompatActivity {
                 valueUpdateHelper(mCurrentScore,scoreId);
                 mValueTextView.setText(Integer.toString(mCurrentScore));
                 int buttonNum = randomNum();
+                Long timeNow = SystemClock.elapsedRealtime();
+                Long timeElapsed = SystemClock.elapsedRealtime() - lastClickTime;
+                lastClickTime = timeNow;
+                castTime = (double) timeElapsed;
+                mTimeAverageArray.add(castTime);
+                for (int i = 0; i < mTimeAverageArray.size();i++){
+                    timeSum = timeSum + mTimeAverageArray.get(i);
+                }
+                avgTime = (timeSum/mTimeAverageArray.size());
+                mTimeTextView.setText(String.valueOf(avgTime));
                 decideBox(buttonNum,buttons[5],buttons);
             }
         });
@@ -146,6 +223,16 @@ public class GameActivity extends AppCompatActivity {
                 valueUpdateHelper(mCurrentScore,scoreId);
                 mValueTextView.setText(Integer.toString(mCurrentScore));
                 int buttonNum = randomNum();
+                Long timeNow = SystemClock.elapsedRealtime();
+                Long timeElapsed = SystemClock.elapsedRealtime() - lastClickTime;
+                lastClickTime = timeNow;
+                castTime = (double) timeElapsed;
+                mTimeAverageArray.add(castTime);
+                for (int i = 0; i < mTimeAverageArray.size();i++){
+                    timeSum = timeSum + mTimeAverageArray.get(i);
+                }
+                avgTime = (timeSum/mTimeAverageArray.size());
+                mTimeTextView.setText(String.valueOf(avgTime));
                 decideBox(buttonNum,buttons[6],buttons);
             }
         });
@@ -156,6 +243,16 @@ public class GameActivity extends AppCompatActivity {
                 valueUpdateHelper(mCurrentScore,scoreId);
                 mValueTextView.setText(Integer.toString(mCurrentScore));
                 int buttonNum = randomNum();
+                Long timeNow = SystemClock.elapsedRealtime();
+                Long timeElapsed = SystemClock.elapsedRealtime() - lastClickTime;
+                lastClickTime = timeNow;
+                castTime = (double) timeElapsed;
+                mTimeAverageArray.add(castTime);
+                for (int i = 0; i < mTimeAverageArray.size();i++){
+                    timeSum = timeSum + mTimeAverageArray.get(i);
+                }
+                avgTime = (timeSum/mTimeAverageArray.size());
+                mTimeTextView.setText(String.valueOf(avgTime));
                 decideBox(buttonNum,buttons[7],buttons);
             }
         });
@@ -166,6 +263,16 @@ public class GameActivity extends AppCompatActivity {
                 valueUpdateHelper(mCurrentScore,scoreId);
                 mValueTextView.setText(Integer.toString(mCurrentScore));
                 int buttonNum = randomNum();
+                Long timeNow = SystemClock.elapsedRealtime();
+                Long timeElapsed = SystemClock.elapsedRealtime() - lastClickTime;
+                lastClickTime = timeNow;
+                castTime = (double) timeElapsed;
+                mTimeAverageArray.add(castTime);
+                for (int i = 0; i < mTimeAverageArray.size();i++){
+                    timeSum = timeSum + mTimeAverageArray.get(i);
+                }
+                avgTime = (timeSum/mTimeAverageArray.size());
+                mTimeTextView.setText(String.valueOf(avgTime));
                 decideBox(buttonNum,buttons[8],buttons);
             }
         });
