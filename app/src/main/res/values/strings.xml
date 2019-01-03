@@ -2,9 +2,10 @@
     <string name="app_name">BoxClicker</string>
 
     <!--Static Strings for Main Activity-->
-    <string name="title_string">Box Clicker</string>
+    <string name="title_string">Simple Clicker</string>
     <string name="start_string">Start</string>
     <string name="help_string">Help</string>
+    <string name="seconds_string">Avg Time Per Click:</string>
 
 
     <!--Game Activity Strings-->
@@ -12,4 +13,5 @@
     <string name="value_string">0</string>
     <string name="avg_time_string">Average Time: </string>
     <string name="time_value_string">0.0</string>
+    <string name="time_multiplier_string">0x</string>
 </resources>
