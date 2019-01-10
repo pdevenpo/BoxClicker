@@ -24,6 +24,8 @@ public interface ScoreDao {
         @Query("SELECT COUNT(*) from score")
         int getAmount();
 
+        //@Query("SELECT COUNT(*) from score ")
+
 
 
 }

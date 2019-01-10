@@ -23,6 +23,7 @@ public class GameActivity extends AppCompatActivity {
     private static TextView mTimeTextView;
     private static TextView mTimeMultiplyView;
 
+
     private Button buttons[] = new Button[9];
     private static int mCurrentScore = 0;
     private static Score mScore;
@@ -46,6 +47,7 @@ public class GameActivity extends AppCompatActivity {
     private static double sum;
     private static double timeAvg;
     private static double initialTime;
+    private static int incrementer = 1;
 
 
 
@@ -60,6 +62,8 @@ public class GameActivity extends AppCompatActivity {
         //mTimeAverageArray.add();
         //---LAYOUT---
         setContentView(R.layout.activity_game);
+        //Clear time array onCreate so it does not carry from previous sessions
+        mTimeAverageArray.clear();
         //---TEXTVIEWS---
         mValueTextView = findViewById(R.id.valueString);
         mTimeTextView = findViewById(R.id.timeString);
@@ -68,6 +72,7 @@ public class GameActivity extends AppCompatActivity {
         for(int i = 0;i <9;i++){
             buttons[i] = findViewById(BUTTON_ID[i]);
         }
+
         //hide all buttons besides start button
         for(int i = 1; i<9;i++){
             buttons[i].setVisibility(View.GONE);
@@ -241,18 +246,23 @@ public class GameActivity extends AppCompatActivity {
          timeAvg = sum/timeAvgArr.size();
          DecimalFormat df = new DecimalFormat("#.###");
          mTimeTextView.setText(String.valueOf(df.format(timeAvg)) + " seconds.");
-         if (timeAvg < 1.0 && timeAvg > .8){
+         if (timeAvg > .7){
              mTimeMultiplyView.setText("1x");
-         }else if (timeAvg < .8 && timeAvg > .6){
+             incrementer = 1;
+         }else if (timeAvg < .7 && timeAvg > .5){
              mTimeMultiplyView.setText("2x");
-         }else{
+
+
+             incrementer = 2;
+         }else if(timeAvg <= .5){
              mTimeMultiplyView.setText("3x");
+             incrementer = 3;
          }
     }
 
     //update all the score values and send info to DB
     public static void valueUpdateHelper(int currentScore, int scoreIdNum){
-        mCurrentScore = currentScore + 1;
+        mCurrentScore = currentScore + incrementer;
         scoreId = scoreIdNum + 1;
         mScore.setScoreId(scoreId);
         mScore.setScoreTotal(mCurrentScore);
@@ -271,6 +281,8 @@ public class GameActivity extends AppCompatActivity {
             case 2:
                 currentButton.setVisibility(View.GONE);
                 buttonsArr[1].setVisibility(View.VISIBLE);
+                //TODO Add color change support on multiplier
+                //buttonsArr[2].setBackgroundColor(buttonsArr[2].getContext().getResources().getColor(R.color.colorPrimaryDark));
                 break;
             case 3:
                 currentButton.setVisibility(View.GONE);
